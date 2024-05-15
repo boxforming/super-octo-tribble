@@ -34,12 +34,11 @@ jobs:
         run: openssl req -new -key $CERTHOSTNAME.key -out $CERTHOSTNAME.csr -subj "/CN=$CERTHOSTNAME" -addext "subjectAltName=DNS:$CERTHOSTNAME,DNS:*.$CERTHOSTNAME"
       
       - name: Generate Expired Certificate
-        run: >
-          openssl x509 -req -in $CERTHOSTNAME.csr -CA $CERTHOSTNAME-ca.crt -CAkey $CERTHOSTNAME.key -CAcreateserial -out $CERTHOSTNAME-expired.crt -days -7 -sha256
+        # run: openssl x509 -req -in $CERTHOSTNAME.csr -CA $CERTHOSTNAME-ca.crt -CAkey $CERTHOSTNAME.key -CAcreateserial -out $CERTHOSTNAME-expired.crt -days -7 -sha256
+        run: openssl ca -CA $CERTHOSTNAME-ca.crt -CAkey $CERTHOSTNAME.key -in $CERTHOSTNAME.csr -out $CERTHOSTNAME-expired.crt -startdate 202401010000Z -enddate 202404010000Z
       
       - name: Generate Valid Certificate
-        run: >
-          openssl x509 -req -in $CERTHOSTNAME.csr -CA $CERTHOSTNAME-ca.crt -CAkey $CERTHOSTNAME.key -CAcreateserial -out $CERTHOSTNAME.crt -days 83 -sha256
+        run: openssl x509 -req -in $CERTHOSTNAME.csr -CA $CERTHOSTNAME-ca.crt -CAkey $CERTHOSTNAME.key -CAcreateserial -out $CERTHOSTNAME.crt -days 83 -sha256
 
       - name: Display Expiration Dates
         run: |
