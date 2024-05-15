@@ -28,7 +28,7 @@ jobs:
         run: openssl genpkey -algorithm RSA -out $CERTHOSTNAME.key
       
       - name: Generate CA Certificate
-        run: openssl req -x509 -new -nodes -key $CERTHOSTNAME.key -sha256 -days 365 -out $CERTHOSTNAME-ca.crt
+        run: openssl req -x509 -new -nodes -key $CERTHOSTNAME.key -sha256 -days 365 -subj "/CN=$CERTHOSTNAME-CA" -out $CERTHOSTNAME-ca.crt
       
       - name: Generate CSR
         run: openssl req -new -key $CERTHOSTNAME.key -out $CERTHOSTNAME.csr \
